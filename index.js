@@ -607,7 +607,24 @@ app.post("/signup", async (req, res) => {
     console.log(err);
   }
 });
-
+app.post("/signupg",async (req, res) => {
+  try{
+    const email = req.body.email;
+    const userID = base64_encode(email);
+    const existingUser = await User.findOne({ userID: userID });
+    if (!existingUser){
+      const newUser = new User({
+        userID: userID,
+        sites: [],
+      });
+      await newUser.save();
+      res.status(200).json({ message: "User authenticated Successfully" });
+    }
+  }
+  catch (err) {
+    console.error("Error authenticating user: ", err)
+  }
+})
 app.post("/signin", async (req, res) => {
   try {
     const email = req.body.email;
