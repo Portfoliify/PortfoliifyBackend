@@ -12,6 +12,7 @@ import sdk from "api";
 const instance = sdk("@render-api/v1.0#aiie8wizhlp1is9bu");
 import { v4 as uuidv4 } from 'uuid';
 import { initializeApp } from "firebase/app"
+import {decode as base64_decode, encode as base64_encode} from 'base-64';
 import {
   getAuth,
   createUserWithEmailAndPassword,
@@ -586,7 +587,7 @@ app.post("/signup", async (req, res) => {
     const pass = req.body.pass;
     const user = await createUserWithEmailAndPassword(auth, email, pass);
     try{
-      const userID = user.user.email;
+      const userID = base64_encode(user.user.email);
       const existingUser = await User.findOne({ userID: userID });
       if (!existingUser){
         const newUser = new User({
@@ -601,7 +602,7 @@ app.post("/signup", async (req, res) => {
       console.error("Error authenticating user: ", err)
     }
 
-    res.send(encodeURIComponent(user.user.email));
+    res.send((user.user.email));
   } catch (err) {
     console.log(err);
   }
@@ -613,7 +614,7 @@ app.post("/signin", async (req, res) => {
     const pass = req.body.pass;
     const user = await signInWithEmailAndPassword(auth, email, pass);
     try{
-      const userID = user.user.email;
+      const userID = base64_encode(user.user.email);
       const existingUser = await User.findOne({ userID: userID });
       if (!existingUser){
         const newUser = new User({
@@ -628,7 +629,7 @@ app.post("/signin", async (req, res) => {
       console.error("Error authenticating user: ", err)
     }
 
-    res.send(encodeURIComponent(user.user.email));
+    res.send((user.user.email));
   } catch (err) {
     console.log(err);
   }
