@@ -28,7 +28,23 @@ const app = express();
 const port = 3001;    
 app.use(cors({ origin: '*' }));
 app.use(express.json());
+const repoPaths = [ "DesignerPortfolio", "Portfolio", "PhotographerPortfolio", "photography-portfolio-1"]
+for(const rp of repoPaths) {
+  const rP = path.resolve(__dirname, rp);
 
+    const git = simpleGit(rP);
+    git.env({
+      GIT_SSH_COMMAND: `ssh -o 'StrictHostKeyChecking=no' -i ~/.ssh/id_rsa`,
+    });
+    process.chdir(rP);
+    await git.init();
+    const existingRemotes = await git.getRemotes(true)
+    if (existingRemotes.length <= 0){
+      await git.addRemote("origin", "example");
+    }
+    
+    process.chdir('..');
+}
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 const storage = multer.memoryStorage();
