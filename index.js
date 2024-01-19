@@ -493,7 +493,7 @@ app.post("/auth", async (req, res) => {
 }
 )
 app.get('/user/sites',async (req, res) => {
-  const { UserID } = req.body; 
+  const { UserID } = req.query; 
   console.log(UserID)
   try{
     const existingUser = await User.findOne({ userID: UserID });
