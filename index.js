@@ -498,6 +498,9 @@ app.get('/user/sites',async (req, res) => {
   try{
     const existingUser = await User.findOne({ userID: UserID });
     if(existingUser){
+      if(!existingUser.sites || existingUser.sites.length == 0){
+        res.status(404).json({ message: "no sites found" });
+      }
       res.json({sites : existingUser.sites});
     }
     else{
