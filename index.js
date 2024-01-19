@@ -12,7 +12,7 @@ import sdk from "api";
 const instance = sdk("@render-api/v1.0#aiie8wizhlp1is9bu");
 import { v4 as uuidv4 } from 'uuid';
 import { initializeApp } from "firebase/app"
-import {decode as base64_decode, encode as base64_encode} from 'base-64';
+import pkg from 'base-64';
 import {
   getAuth,
   createUserWithEmailAndPassword,
@@ -22,7 +22,7 @@ import {
 } from "firebase/auth"; 
 
 dotenv.config();
-
+const {decode: base64_decode, encode: base64_encode} = pkg;
 let PortfolioCount = 1;
 const app = express();
 const port = 3001;    
