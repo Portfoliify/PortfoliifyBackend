@@ -25,7 +25,7 @@ dotenv.config();
 let PortfolioCount = 1;
 const app = express();
 const port = 3001;    
-app.use(cors());
+app.use(cors({ origin: '*' }));
 app.use(express.json());
 
 const __filename = fileURLToPath(import.meta.url);
