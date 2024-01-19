@@ -501,7 +501,9 @@ app.get('/user/sites',async (req, res) => {
       if(!existingUser.sites || existingUser.sites.length == 0){
         res.status(404).json({ message: "no sites found" });
       }
-      res.json({sites : existingUser.sites});
+      else{
+        res.json({sites : existingUser.sites});
+      }
     }
     else{
       res.status(404).json({error: "User not found"})
