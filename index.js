@@ -28,6 +28,8 @@ const app = express();
 const port = 3001;    
 app.use(cors({ origin: '*' }));
 app.use(express.json());
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
 const repoPaths = [ "DesignerPortfolio", "Portfolio", "PhotographerPortfolio", "photography-portfolio-1"]
 for(const rp of repoPaths) {
   const rP = path.resolve(__dirname, rp);
@@ -45,8 +47,7 @@ for(const rp of repoPaths) {
     
     process.chdir('..');
 }
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = dirname(__filename);
+
 const storage = multer.memoryStorage();
 const upload = multer({
   limits: {
