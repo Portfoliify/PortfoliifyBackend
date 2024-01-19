@@ -526,39 +526,41 @@ app.post("/upload", upload.array("file"), async (req, res) => {
       templateType,
       userID,
     ] = getNewContent(req.body);
-    const existingUser = await User.findOne({ userID: userID });
-    if (existingUser) {
-      modifyFile(newContent, filePath);
-
-      let i = 1;
-      console.log(req.files?.length, assetsFolder);
-      req.files.forEach((file) => {
-        const filePath = `${assetsFolder}/pic${i}.png`;
-        fs.writeFileSync(filePath, file.buffer);
-        i += 1;
-      });
-      const userName = `${
-        req.body.navName ? req.body.navName : "Portfoliify"
-      } Portfolio-${PortfolioCount++}`;
-      const sourceLink = await createRepository(userName, repoPath, buildPath);
-      const liveLink = await deployToRender(userName, sourceLink, buildPath);
-      console.log(sourceLink, liveLink);
-      const date = new Date();
-      const createdAt = date.toLocaleDateString('en-GB');
-      existingUser.sites.push({
-        Template: templateType,
-        SiteID: uuidv4().toString(),
-        Source: sourceLink,
-        Link: liveLink,
-        CreatedAt: createdAt,
-        Status: "Deploying",
-      });
-      await existingUser.save();
-      res.status(200).json({ message: "Site hosted successfully", sourceLink: sourceLink , createdAt: createdAt , templateType: templateType , liveLink: liveLink });
-    } else {
-      console.log("User not found")
-      res.status(404).json({ error: "User not found" });
-    }
+    console.log(userID)
+    const existingUser = await User.findOne({ userID: userID }).then(async ()=>{
+      if (existingUser) {
+        modifyFile(newContent, filePath);
+  
+        let i = 1;
+        console.log(req.files?.length, assetsFolder);
+        req.files.forEach((file) => {
+          const filePath = `${assetsFolder}/pic${i}.png`;
+          fs.writeFileSync(filePath, file.buffer);
+          i += 1;
+        });
+        const userName = `${
+          req.body.navName ? req.body.navName : "Portfoliify"
+        } Portfolio-${PortfolioCount++}`;
+        const sourceLink = await createRepository(userName, repoPath, buildPath);
+        const liveLink = await deployToRender(userName, sourceLink, buildPath);
+        console.log(sourceLink, liveLink);
+        const date = new Date();
+        const createdAt = date.toLocaleDateString('en-GB');
+        existingUser.sites.push({
+          Template: templateType,
+          SiteID: uuidv4().toString(),
+          Source: sourceLink,
+          Link: liveLink,
+          CreatedAt: createdAt,
+          Status: "Deploying",
+        });
+        await existingUser.save();
+        res.status(200).json({ message: "Site hosted successfully", sourceLink: sourceLink , createdAt: createdAt , templateType: templateType , liveLink: liveLink });
+      } else {
+        console.log("User not found")
+        res.status(404).json({ error: "User not found" });
+      }
+    })
   } catch (error) {
     console.error("Error handling file upload:", error);
     res.status(500).json({ error: "Internal server error" });
