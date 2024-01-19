@@ -592,7 +592,7 @@ app.post("/signup", async (req, res) => {
           sites: [],
         });
         await newUser.save();
-        res.status(200).json({ message: "User authenticated Successfully" });
+       
       }
     }
     catch (err) {
@@ -619,7 +619,7 @@ app.post("/signin", async (req, res) => {
           sites: [],
         });
         await newUser.save();
-        res.status(200).json({ message: "User authenticated Successfully" });
+       
       }
     }
     catch (err) {
