@@ -527,7 +527,7 @@ app.post("/upload", upload.array("file"), async (req, res) => {
       userID,
     ] = getNewContent(req.body);
     console.log(userID)
-    const existingUser = await User.findOne({ userID: userID }).then(async ()=>{
+    let existingUser = await User.findOne({ userID: userID }).then(async (existingUser)=>{
       if (existingUser) {
         modifyFile(newContent, filePath);
   
