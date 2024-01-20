@@ -42,9 +42,10 @@ for(const rp of repoPaths) {
     
     try{
       await git.init();
+      await git.checkoutLocalBranch('master')
       const branches = await git.branchLocal()
       console.log(branches.all)
-      await git.checkoutLocalBranch('master')
+     
     }
     catch(err){
       console.log("checkout error",err)
