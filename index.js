@@ -7,6 +7,7 @@ import path, { dirname } from "path";
 import dotenv from "dotenv";
 import simpleGit from "simple-git";
 import axios from "axios";
+import execa from 'execa';
 import mongoose from "mongoose";
 import sdk from "api";
 const instance = sdk("@render-api/v1.0#aiie8wizhlp1is9bu");
@@ -30,6 +31,17 @@ app.use(cors({ origin: '*' }));
 app.use(express.json());
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
+async function setGlobalGitConfig() {
+  try { 
+    await execa.command(`git config --global user.name "Portfoliify"`); 
+    await execa.command(`git config --global user.email ${process.env.GITHUB_EMAIL_ADDRESS}`);
+
+    console.log('Global Git configurations set successfully.');
+  } catch (error) {
+    console.error('Error setting global Git configurations:', error.message);
+  }
+}
+setGlobalGitConfig()
 const repoPaths = [ "DesignerPortfolio", "Portfolio", "PhotographerPortfolio", "photography-portfolio-1"]
 const gitt = simpleGit()
 try{
