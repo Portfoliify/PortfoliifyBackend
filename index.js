@@ -42,9 +42,11 @@ for(const rp of repoPaths) {
     
     try{
       await git.init();
-      await git.checkoutLocalBranch('master')
-      const branches = await git.branchLocal()
-      console.log(branches.all)
+      await git.checkoutLocalBranch('master'); 
+      await git.add(".");
+      await git.commit("first commit");
+      const branches = await git.branchLocal();
+      console.log(branches.all);
      
     }
     catch(err){
@@ -431,10 +433,12 @@ async function gitCommands(folderName, repoLink, username) {
     });
     process.chdir(repoPath);
     await git.init();
-
-    await git.removeRemote("origin");
+    const existingRemotes = await git.getRemotes(true);
+    if (existingRemotes.length > 0) {
+     await git.removeRemote("origin");
+      console.log('Remote "origin" removed successfully.');
+    }
     await git.addRemote("origin", repoLink);
-
     await git.add(".");
     await git.commit("first commit");
     await git.addConfig("user.name", "Portfoliify");
