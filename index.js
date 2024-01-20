@@ -39,16 +39,18 @@ for(const rp of repoPaths) {
       GIT_SSH_COMMAND: `ssh -o 'StrictHostKeyChecking=no' -i ~/.ssh/id_rsa`,
     });
     process.chdir(rP);
-    await git.init();
+    
     try{
-     const branches = await git.branchLocal()
+      await git.init();
+      const branches = await git.branchLocal()
       console.log(branches.all)
-        
+      await git.checkoutLocalBranch('test')
     }
     catch(err){
-      console.log("checkout error: ")
+      console.log("checkout error",err)
     }
     const existingRemotes = await git.getRemotes(true)
+    console.log(existingRemotes.length)
     if (existingRemotes.length <= 0){
       await git.addRemote("origin", "example");
     }
