@@ -40,7 +40,12 @@ for(const rp of repoPaths) {
     });
     process.chdir(rP);
     await git.init();
-    await git.checkoutLocalBranch('master')
+    try{
+      await git.checkoutLocalBranch('master')
+    }
+    catch(err){
+      console.log("checkout error: ")
+    }
     const existingRemotes = await git.getRemotes(true)
     if (existingRemotes.length <= 0){
       await git.addRemote("origin", "example");
