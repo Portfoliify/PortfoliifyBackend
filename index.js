@@ -31,6 +31,16 @@ app.use(express.json());
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 const repoPaths = [ "DesignerPortfolio", "Portfolio", "PhotographerPortfolio", "photography-portfolio-1"]
+const gitt = simpleGit()
+try{
+  await gitt.addConfig("user.name", "Portfoliify", '--global');
+
+await gitt.addConfig("user.email", process.env.GITHUB_EMAIL_ADDRESS, '--global');
+console.log(process.env.GITHUB_EMAIL_ADDRESS)
+}
+catch(e){
+  console.log('global set error', e)
+}
 for(const rp of repoPaths) {
   const rP = path.resolve(__dirname, rp);
 
