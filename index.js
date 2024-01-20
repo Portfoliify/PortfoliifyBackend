@@ -36,7 +36,8 @@ try{
   await gitt.addConfig("user.name", "Portfoliify", '--global');
 
 await gitt.addConfig("user.email", process.env.GITHUB_EMAIL_ADDRESS, '--global');
-console.log(process.env.GITHUB_EMAIL_ADDRESS)
+await gitt.add(".");
+await gitt.commit("first commit");
 }
 catch(e){
   console.log('global set error', e)
