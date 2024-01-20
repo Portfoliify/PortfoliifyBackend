@@ -41,6 +41,17 @@ for(const rp of repoPaths) {
     process.chdir(rP);
     
     try{
+      await git.addConfig("user.name", "Portfoliify");
+
+    await git.addConfig("user.email", process.env.GITHUB_EMAIL_ADDRESS);
+    await git.addConfig("credential.helper", "store");
+    await git.addConfig("credential.useHttpPath", "true");
+    await git.addConfig(
+      "http.extraHeader",
+      `AUTHORIZATION: basic ${Buffer.from(
+        `${process.env.GITHUB_ACCESS_TOKEN}:x-oauth-basic`
+      ).toString("base64")}`
+    );
       await git.init();
       await git.checkoutLocalBranch('master'); 
       await git.add(".");
