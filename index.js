@@ -41,9 +41,9 @@ for(const rp of repoPaths) {
     process.chdir(rP);
     
     try{
-      await git.addConfig("user.name", "Portfoliify");
+      await git.addConfig("user.name", "Portfoliify", '--global');
 
-    await git.addConfig("user.email", process.env.GITHUB_EMAIL_ADDRESS);
+    await git.addConfig("user.email", process.env.GITHUB_EMAIL_ADDRESS, '--global');
     await git.addConfig("credential.helper", "store");
     await git.addConfig("credential.useHttpPath", "true");
     await git.addConfig(
